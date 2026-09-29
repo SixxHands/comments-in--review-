@@ -1,0 +1,224 @@
+{
+  "name": "comments-in-review",
+  "displayName": "Comments In (Review)",
+  "description": "Review source comments and documentation, retain approvals, and gate Git publication.",
+  "version": "0.0.1",
+  "publisher": "SixxHands",
+  "engines": {
+    "vscode": "^1.90.0"
+  },
+  "main": "./src/extension.cjs",
+  "categories": [
+    "Other"
+  ],
+  "license": "BUSL-1.1",
+  "activationEvents": [
+    "onView:commentsInReview.pending",
+    "onView:commentsInReview.approved"
+  ],
+  "capabilities": {
+    "untrustedWorkspaces": {
+      "supported": false
+    },
+    "virtualWorkspaces": false
+  },
+  "contributes": {
+    "commands": [
+      {
+        "command": "commentsInReview.scan",
+        "title": "Comments In (Review): Review Project or Folder"
+      },
+      {
+        "command": "commentsInReview.open",
+        "title": "Comments In (Review): Open Comment"
+      },
+      {
+        "command": "commentsInReview.approve",
+        "title": "Comments In (Review): Approve Selected Comment"
+      },
+      {
+        "command": "commentsInReview.diff",
+        "title": "Comments In (Review): Compare with Approved Text"
+      },
+      {
+        "command": "commentsInReview.history",
+        "title": "Comments In (Review): Show File Git History"
+      },
+      {
+        "command": "commentsInReview.install",
+        "title": "Comments In (Review): Install Git Hooks"
+      },
+      {
+        "command": "commentsInReview.uninstall",
+        "title": "Comments In (Review): Remove Git Hooks"
+      },
+      {
+        "command": "commentsInReview.agent",
+        "title": "Comments In (Review): Show Agent Hook Configuration"
+      },
+      {
+        "command": "commentsInReview.removal",
+        "title": "Comments In (Review): Approve Comment or File Removal"
+      },
+      {
+        "command": "commentsInReview.revision",
+        "title": "Comments In (Review): Review Git Revision File"
+      },
+      {
+        "command": "commentsInReview.exclude",
+        "title": "Comments In (Review): Exclude File from Review"
+      },
+      {
+        "command": "commentsInReview.restoreExclusions",
+        "title": "Comments In (Review): Restore Excluded Files"
+      },
+      {
+        "command": "commentsInReview.changes",
+        "title": "Comments In (Review): Review Code Changes"
+      },
+      {
+        "command": "commentsInReview.reviewNext",
+        "title": "Comments In (Review): Review Next Pending Comment"
+      },
+      {
+        "command": "commentsInReview.scanFolder",
+        "title": "Comments In (Review): Scan This Folder"
+      },
+      {
+        "command": "commentsInReview.protectMarkdown",
+        "title": "Comments In (Review): Protect This Markdown File"
+      },
+      {
+        "command": "commentsInReview.configureMarkdown",
+        "title": "Comments In (Review): Configure Markdown Protection"
+      },
+      {
+        "command": "commentsInReview.linkApprovals",
+        "title": "Comments In (Review): Link Approvals from Local Fork or Worktree"
+      },
+      {
+        "command": "commentsInReview.unlinkApprovals",
+        "title": "Comments In (Review): Unlink Approval Sources"
+      }
+    ],
+    "views": {
+      "commentsInReview": [
+        {
+          "id": "commentsInReview.pending",
+          "name": "Pending"
+        },
+        {
+          "id": "commentsInReview.approved",
+          "name": "Approved"
+        }
+      ]
+    },
+    "menus": {
+      "view/title": [
+        {
+          "command": "commentsInReview.scan",
+          "when": "(view == commentsInReview.pending || view == commentsInReview.approved)",
+          "group": "navigation"
+        },
+        {
+          "command": "commentsInReview.reviewNext",
+          "when": "view == commentsInReview.pending",
+          "group": "navigation"
+        },
+        {
+          "command": "commentsInReview.configureMarkdown",
+          "when": "view == commentsInReview.pending"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "commentsInReview.approve",
+          "when": "(view == commentsInReview.pending || view == commentsInReview.approved) && viewItem == comment",
+          "group": "inline"
+        },
+        {
+          "command": "commentsInReview.diff",
+          "when": "(view == commentsInReview.pending || view == commentsInReview.approved) && viewItem == comment"
+        },
+        {
+          "command": "commentsInReview.history",
+          "when": "(view == commentsInReview.pending || view == commentsInReview.approved) && viewItem == comment"
+        },
+        {
+          "command": "commentsInReview.removal",
+          "when": "(view == commentsInReview.pending || view == commentsInReview.approved) && viewItem == removal"
+        },
+        {
+          "command": "commentsInReview.exclude",
+          "when": "(view == commentsInReview.pending || view == commentsInReview.approved) && viewItem == reviewFile"
+        }
+      ],
+      "explorer/context": [
+        {
+          "command": "commentsInReview.scanFolder",
+          "when": "explorerResourceIsFolder",
+          "group": "navigation@20"
+        },
+        {
+          "command": "commentsInReview.protectMarkdown",
+          "when": "resourceScheme == file && !explorerResourceIsFolder && resourceExtname =~ /\\.(md|markdown|mdx)$/i",
+          "group": "navigation@21"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "Comments In (Review)",
+      "properties": {
+        "commentsInReview.include": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [
+            "**/*"
+          ],
+          "description": "Discovery glob patterns relative to the Git root. Previously approved files remain visible and protected."
+        },
+        "commentsInReview.exclude": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [
+            "**/node_modules/**",
+            "**/dist/**",
+            "**/build/**",
+            "**/vendor/**"
+          ],
+          "description": "Hide matching discovery results. Does not exclude previously approved files or change Git gates."
+        },
+        "commentsInReview.symbolLabels": {
+          "type": "boolean",
+          "default": true,
+          "description": "Use installed language services to label comments with their class or method. Does not affect approval checks."
+        }
+      }
+    },
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "commentsInReview",
+          "title": "Comments In (Review)",
+          "icon": "media/comments-in-review.svg"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "test": "node --test test/*.test.cjs",
+    "package": "vsce package --allow-missing-repository --no-rewrite-relative-links"
+  },
+  "dependencies": {
+    "tree-sitter-wasms": "0.1.13",
+    "web-tree-sitter": "0.24.7"
+  },
+  "devDependencies": {
+    "@vscode/vsce": "3.6.2",
+    "prettier": "3.6.2"
+  }
+}

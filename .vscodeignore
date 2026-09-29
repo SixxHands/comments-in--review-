@@ -1,0 +1,7 @@
+test/**
+tools/**
+vendor-validation/**
+*.vsix
+package-lock.json
+.gitignore
+**/__pycache__/**

@@ -1,3 +1,8 @@
+node_modules/
+*.vsix
+__pycache__/
+.comments-in-review/
+
 */config/development
 */logs/log-*.php
 !*/logs/index.html
@@ -16,3 +21,5 @@ application/logs/*
 !application/logs/index.html
 !application/logs/.htaccess
 /vendor/
+/vendor-validation
+/tools

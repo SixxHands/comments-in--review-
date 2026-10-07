@@ -8,7 +8,8 @@ class StatusBarFactory
 {
     static Create(data)
     {
-        const statusBar = vscode.window.createStatusBarItem(
+        const statusBar = vscode.window.createStatusBarItem
+        (
             data.Alignment,
             data.Priority
         );

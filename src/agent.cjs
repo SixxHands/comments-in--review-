@@ -14,10 +14,11 @@ const review = require('./comments-in-review.cjs');
 const store = require('./state.cjs');
 function deny(reason) {
   return {
-    hookSpecificOutput: {
-      hookEventName: 'PreToolUse',
-      permissionDecision: 'deny',
-      permissionDecisionReason: reason,
+    hookSpecificOutput: 
+	{
+    	hookEventName: 'PreToolUse',
+    	permissionDecision: 'deny',
+    	permissionDecisionReason: reason,
     },
   };
 }

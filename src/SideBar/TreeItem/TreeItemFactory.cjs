@@ -4,41 +4,27 @@ const vscode = require('vscode');
 
 class TreeItemFactory
 {
-    static Create(item)
+    static Create(blueprint)
     {
-        const t = new vscode.TreeItem(
-                item.label,
-                vscode.TreeItemCollapsibleState.None,
-              );
-              t.id =
-                item.r.file + ':' + item.type + ':' + (item.i?.index ?? item.label);
-              t.contextValue =
-                item.type === 'removal'
-                  ? 'removal'
-                  : item.type === 'comment'
-                    ? 'comment'
-                    : 'error';
-              if (item.type === 'comment') {
-                t.description = [
-                  item.i.reason,
-                  item.i.approvalSource ? 'Linked: ' + item.i.approvalSource : null,
-                  item.i.symbol,
-                ]
-                  .filter(Boolean)
-                  .join(' · ');
-                t.tooltip = item.i.text;
-                t.command = {
-                  command: 'commentsInReview.open',
-                  title: 'Open',
-                  arguments: [item],
-                };
-                t.iconPath = new vscode.ThemeIcon(
-                  item.i.approved ? 'pass' : 'comment-discussion',
-                );
-              }
+        const treeItem = new vscode.TreeItem
+        (
+            blueprint.Label,
+            blueprint.CollapsibleState
+        );
 
-              return TreeItemFactory;
+        treeItem.id = blueprint.Id;
+        treeItem.contextValue = blueprint.ContextValue;
+        treeItem.description = blueprint.Description;
+        treeItem.tooltip = blueprint.Tooltip;
+        treeItem.command = blueprint.Command;
+
+        if (blueprint.IconId !== undefined)
+        {
+            treeItem.iconPath = new vscode.ThemeIcon(blueprint.IconId);
+        }
+
+        return treeItem;
     }
 }
 
-module.exports = { TreeItemFactory }
+module.exports = { TreeItemFactory };

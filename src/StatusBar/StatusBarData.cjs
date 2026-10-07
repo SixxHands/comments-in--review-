@@ -4,7 +4,7 @@ const vscode = require('vscode');
 
 class StatusBarData
 {
-    constructo(
+    construct(
         command,
         text,
         alignment = vscode.StatusBarAlignment.Left, 
@@ -13,8 +13,8 @@ class StatusBarData
     {
         this.Command = command;
         this.Text = text;
-        this.Alginment = alignment;
-        this.priority = priority;
+        this.Alignment = alignment;
+        this.Priority = priority;
 
         Object.freeze(this);
 

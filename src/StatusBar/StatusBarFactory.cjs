@@ -9,11 +9,11 @@ class StatusBarFactory
     static Create(data)
     {
         const statusBar = vscode.window.createStatusBarItem(
-            data.Aligment,
+            data.Alignment,
             data.Priority
         );
 
-        statusBar.command = data.command;
+        statusBar.command = data.Command;
         statusBar.text = data.Text;
 
         return statusBar;
